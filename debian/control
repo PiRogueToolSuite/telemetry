@@ -17,6 +17,6 @@ Architecture: all
 Depends: ${misc:Depends},
  ${python3:Depends},
  python3-requests,
- python3-influxdb,
+ python3-influxdb-client,
 Description: Install the privacy-preserving telemetry system for PiRogue
 

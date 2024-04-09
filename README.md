@@ -14,7 +14,7 @@ Edit the file `/var/lib/pirogue/config/telemetry.json` and set `enabled` to `fal
 
 You can also delete the entire package with the command:
 ```
-sudo apt remove --purge pirogue-telemetry
+sudo apt purge pirogue-telemetry
 ```
 
 # What data we collect
