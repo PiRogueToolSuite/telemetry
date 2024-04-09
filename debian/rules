@@ -2,7 +2,7 @@
 
 export PYBUILD_NAME := pts-telemetry
 export PACKAGE := pirogue-telemetry
-export CONFIG := telemetry.json
+export CONFIG := debian/telemetry.json
 export CONFIG_DIR := usr/share/pirogue/config/
 
 %:
@@ -12,7 +12,7 @@ override_dh_builddeb:
 	dh_builddeb -- -Zxz
 
 execute_after_dh_auto_build:
-	gpg --batch --output $(CONFIG) --decrypt $(CONFIG).asc || true
+	gpg --batch --output $(CONFIG) --decrypt $(CONFIG).asc
 
 execute_after_dh_install:
 	if [ -f $(CONFIG) ]; then \

@@ -10,24 +10,24 @@ logger = logging.getLogger('pirogue_telemetry')
 
 
 def __show_telemetry_configuration():
-    configuration = TelemetryConfiguration()
+    configuration = TelemetryConfiguration(auto_load=True)
     print(configuration.as_json())
 
 
 def __initialize_telemetry_configuration():
-    configuration = TelemetryConfiguration()
+    configuration = TelemetryConfiguration(auto_load=True)
     configuration.save(force=True)
 
 
 def __disable_telemetry():
-    configuration = TelemetryConfiguration()
+    configuration = TelemetryConfiguration(auto_load=True)
     configuration.enabled = False
     configuration.save(force=True)
     logger.info('PiRogue telemetry is now disabled')
 
 
 def __collect_telemetry():
-    configuration = TelemetryConfiguration()
+    configuration = TelemetryConfiguration(auto_load=True)
     logger.info('Collecting PiRogue telemetry')
     telemetry = Telemetry(configuration)
     telemetry.collect_data()

@@ -26,6 +26,7 @@ if [ "$1" = "configure" ]; then
 
   # Do not override any existing configuration
   if [ ! -f $STORED_CONFIG ]; then
+    mkdir -p $(dirname $STORED_CONFIG)
     cp $SHIPPED_CONFIG $STORED_CONFIG
     chown $TELEMETRY_USER $STORED_CONFIG
   fi

@@ -43,7 +43,7 @@ class TelemetryConfiguration:
     default_configuration_file_name: str = 'telemetry.json'
     configuration_file_path: str = ''
 
-    def __init__(self, telemetry_type=TelemetryType.PIROGUE):
+    def __init__(self, telemetry_type=TelemetryType.PIROGUE, auto_load=False):
         self.unique_id: str = str(uuid.uuid4())
         self.enabled: bool = True
         self.host: str = ''
@@ -52,7 +52,8 @@ class TelemetryConfiguration:
         self.token: str = ''
         self.ip_resolver_url: str = ''
         self.configuration_file_path = f'{self.type.configuration_path}/{self.default_configuration_file_name}'
-        self.load_or_initialize()
+        if auto_load:
+            self.load_or_initialize()
 
     def load_or_initialize(self):
         if not os.path.isfile(self.configuration_file_path):
@@ -174,16 +175,3 @@ class Telemetry:
                     write_api.close()
                 except InfluxDBError as e:
                     raise Exception(f'An error occurred while sending the telemetry: {e}')
-
-
-if __name__ == '__main__':
-    pass
-    # c = TelemetryConfiguration.get_default('ddf', TelemetryType.PIROGUE)
-    # c = TelemetryConfiguration.load_from_file('/home/esther/Gre/projects/pts/pts-telemetry/trash/conf.json')
-    # c = TelemetryConfiguration.load_from_environment()
-    # print(c.as_json())
-    # c.save(configuration_path='/home/esther/Gre/projects/pts/pts-telemetry/trash/', force=False)
-    # t = Telemetry(c)
-    # t.collect_data()
-    # t.send_data()
-    # print(json.dumps(t.device_info, indent=2, sort_keys=True))
