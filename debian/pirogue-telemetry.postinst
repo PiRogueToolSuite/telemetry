@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -e
+
+#DEBHELPER#
+
+SHIPPED_CONFIG=/usr/share/pirogue/config/telemetry.json
+STORED_CONFIG=/var/lib/pirogue/config/telemetry.json
+TELEMETRY_USER=telemetry
+
+# Note: adduser defaults to assigning system users to the 'nogroup'
+#       group, hence the need for the --group option
+if [ "$1" = "configure" ]; then
+    adduser --system            \
+            --quiet             \
+            --home /nonexistent \
+            --no-create-home    \
+            --disabled-password \
+            --group             \
+            "$TELEMETRY_USER"
+
+  if [ ! -f $SHIPPED_CONFIG ]; then
+    echo "Not an official build of the package"
+    exit 1
+  fi
+
+  # Do not override any existing configuration
+  if [ ! -f $STORED_CONFIG ]; then
+    cp $SHIPPED_CONFIG $STORED_CONFIG
+    chown $TELEMETRY_USER $STORED_CONFIG
+  fi
+fi

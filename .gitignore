@@ -1,0 +1,8 @@
+venv/
+dist/
+.idea/
+**/__pycache__/
+*.egg-info
+notes
+t.py
+configuration.json

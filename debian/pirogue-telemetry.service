@@ -1,0 +1,10 @@
+[Unit]
+Description=Collect PiRogue telemetry
+After=network.target
+
+[Service]
+Type=oneshot
+User=telemetry
+Group=nogroup
+ExecStart=/usr/bin/pirogue-telemetry collect
+ExecStop=

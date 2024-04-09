@@ -1,0 +1,28 @@
+#! /usr/bin/make -f
+
+export PYBUILD_NAME := pts-telemetry
+export PACKAGE := pirogue-telemetry
+export CONFIG := telemetry.json
+export CONFIG_DIR := usr/share/pirogue/config/
+
+%:
+	dh $@ --with quilt,python3 --buildsystem=pybuild
+
+override_dh_builddeb:
+	dh_builddeb -- -Zxz
+
+execute_after_dh_auto_build:
+	gpg --batch --output $(CONFIG) --decrypt $(CONFIG).asc || true
+
+execute_after_dh_install:
+	if [ -f $(CONFIG) ]; then \
+		mkdir -p debian/$(PACKAGE)/$(CONFIG_DIR) && \
+		cp $(CONFIG) debian/$(PACKAGE)/$(CONFIG_DIR); \
+	fi
+
+execute_after_dh_clean:
+	rm -f $(CONFIG)
+
+override_dh_clean:
+	dh_clean
+	rm -rf pts_telemetry.egg-info/
