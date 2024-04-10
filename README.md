@@ -2,7 +2,7 @@
 <img width="60px" src="https://pts-project.org/android-chrome-512x512.png">
 <h1>PiRogue Tool Suite telemetry</h1>
 <p>
-This package installs the privacy-preserving telemetry to measure project adoption. Have a look to our website to <a href="https://pts-project.org/" alt="Learn more about PTS">learn more PiRogue Tool Suite</a>.
+This package installs the privacy-preserving telemetry to measure project adoption. Have a look to our website to <a href="https://pts-project.org/" alt="Learn more about PTS">learn more about PiRogue Tool Suite</a>.
 </p>
 <p>
 License: GPLv3
