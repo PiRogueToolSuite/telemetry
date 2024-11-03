@@ -6,6 +6,7 @@ import platform
 import uuid
 from datetime import datetime
 from enum import Enum
+from pathlib import Path
 from platform import uname_result
 
 import requests
@@ -146,6 +147,14 @@ class Telemetry:
             system_info: uname_result = platform.uname()
             self.device_info['os_type'] = system_info.system.lower()
             self.device_info['os_arch'] = system_info.machine.lower()
+            # base-files is updated during Debian point releases (12.0, 12.1, etc.), which helps get
+            # a sense whether systems are upgraded (with packages flowing from the Debian side).
+            #
+            # Note: On testing, unstable, and apparently on all Ubuntu releases (even stable ones),
+            # we're getting trixie/sid instead (trixie being the codename for the current testing).
+            edv = Path('/etc/debian_version')
+            if edv.exists():
+                self.device_info['os_debian_version'] = edv.read_text().rstrip()
         except Exception:
             self.device_info = {}
             return None
