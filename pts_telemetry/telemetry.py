@@ -6,7 +6,9 @@ import platform
 import uuid
 from datetime import datetime
 from enum import Enum
+from pathlib import Path
 from platform import uname_result
+from subprocess import check_output, SubprocessError
 
 import requests
 from influxdb_client import Point, InfluxDBClient
@@ -146,6 +148,25 @@ class Telemetry:
             system_info: uname_result = platform.uname()
             self.device_info['os_type'] = system_info.system.lower()
             self.device_info['os_arch'] = system_info.machine.lower()
+            # base-files is updated during Debian point releases (12.0, 12.1, etc.), which helps get
+            # a sense whether systems are upgraded (with packages flowing from the Debian side).
+            #
+            # Note: On testing, unstable, and apparently on all Ubuntu releases (even stable ones),
+            # we're getting trixie/sid instead (trixie being the codename for the current testing).
+            edv = Path('/etc/debian_version')
+            if edv.exists():
+                self.device_info['os_debian_version'] = edv.read_text().rstrip()
+            # Packages can get upgraded individually but the pirogue-base version should help us get
+            # a sense whether systems are upgraded (with packages flowing from the PTS side).
+            try:
+                # Design choice: The following assumes it's OK to define a "PTS version" based on a
+                # single package's version number. We could also anticipate reporting the version
+                # for more than just one package.
+                self.device_info['pts_version'] = check_output([
+                    'dpkg-query', '-W', '-f=${Version}', 'pirogue-base'
+                ]).decode().rstrip()
+            except SubprocessError:
+                pass
         except Exception:
             self.device_info = {}
             return None

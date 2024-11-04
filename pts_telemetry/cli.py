@@ -1,6 +1,7 @@
 import sys
 import argparse
 import logging
+import pprint
 
 from pts_telemetry.telemetry import TelemetryConfiguration, Telemetry
 
@@ -34,6 +35,15 @@ def __collect_telemetry():
     telemetry.send_data()
 
 
+def __display_telemetry():
+    configuration = TelemetryConfiguration(auto_load=True)
+    logger.info('Displaying PiRogue telemetry')
+    telemetry = Telemetry(configuration)
+    telemetry.collect_data()
+    # This doesn't use an InfluxDB connection contrary to send_data():
+    pprint.pprint(telemetry.device_info)
+
+
 def main():
     arg_parser = argparse.ArgumentParser(prog='telemetry', description='PiRogue telemetry CLI')
     subparsers = arg_parser.add_subparsers(dest='func')
@@ -44,6 +54,7 @@ def main():
                               choices=['init', 'show', 'disable'])
     # Collection
     subparsers.add_parser('collect', help='Collect and send telemetry data')
+    subparsers.add_parser('display', help='Collect and display telemetry data')
 
     args = arg_parser.parse_args()
     if not args.func:
@@ -72,6 +83,12 @@ def main():
     elif args.func == 'collect':
         try:
             __collect_telemetry()
+        except Exception as e:
+            logger.error(e)
+            sys.exit(1)
+    elif args.func == 'display':
+        try:
+            __display_telemetry()
         except Exception as e:
             logger.error(e)
             sys.exit(1)
