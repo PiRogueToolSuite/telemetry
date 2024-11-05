@@ -1,4 +1,4 @@
-pirogue-telemetry (1.0.1) UNRELEASED; urgency=medium
+pirogue-telemetry (1.0.1) bookworm; urgency=medium
 
   * Add support for `pirogue-telemetry display`, to check what collected
     information looks like.

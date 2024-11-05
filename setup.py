@@ -4,7 +4,7 @@ requirements = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(
     name="pts-telemetry",
-    version="1.0.0",
+    version="1.0.1",
     author="U+039b",
     author_email="hello@pts-project.org",
     description="PTS privacy preserving telemetry",
